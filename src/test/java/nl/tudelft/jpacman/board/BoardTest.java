@@ -20,17 +20,4 @@ class BoardTest {
         board = new Board(grid);
         assertThat(board.squareAt(0, 0)).isEqualTo(grid[0][0]);
     }
-
-    /**
-     * Construct a similar board to above, but with just
-     * one null square.
-     * This test should fail.
-     */
-    @Test
-    void testAnotherBoard() {
-        Square[][] grid = new Square[1][1];
-        grid[0][0] = null;
-        board = new Board(grid);
-        assertThat(board.squareAt(0, 0)).isEqualTo(grid[0][0]);
-    }
 }
