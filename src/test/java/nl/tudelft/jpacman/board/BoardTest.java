@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for Board.
+ * Test class for the Board.
  */
 class BoardTest {
     private Board board;
