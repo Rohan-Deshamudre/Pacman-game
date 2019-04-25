@@ -59,7 +59,6 @@ class OccupantTest {
         Square target1 = new BasicSquare();
         Square target2 = new BasicSquare();
         unit.occupy(target1);
-        target2.isAccessibleTo(unit);
         unit.occupy(target2);
         assertThat(target2).isEqualTo(unit.getSquare());
     }
