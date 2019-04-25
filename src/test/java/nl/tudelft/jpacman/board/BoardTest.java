@@ -18,7 +18,7 @@ class BoardTest {
         Square[][] grid = new Square[1][1];
         grid[0][0] = new BasicSquare();
         board = new Board(grid);
-        assertThat(board.invariant()).isEqualTo(true);
+        assertThat(board.squareAt(0, 0)).isEqualTo(grid[0][0]);
     }
 
     /**
@@ -31,6 +31,6 @@ class BoardTest {
         Square[][] grid = new Square[1][1];
         grid[0][0] = null;
         board = new Board(grid);
-        assertThat(board.invariant()).isEqualTo(true);
+        assertThat(board.squareAt(0, 0)).isEqualTo(grid[0][0]);
     }
 }
