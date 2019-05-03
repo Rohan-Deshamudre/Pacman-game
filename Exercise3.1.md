@@ -21,4 +21,4 @@ board.Direction
 - The game class is responsible for tracking the process of the game, calculating points Pacman has, moving the player and keeping track of the level and if the level is won or lost.
 - This game links to the level class which consists a board with players and Ghosts on it. The level registers a player and the player can only move when the game is in progress. When the game is started, all the NPC's follow their scheduling and when the stop button is pressed they are paused which is also handled in Level.
 - Level is linked to board. The board is a grid of squares and is created in the Board class. None of the squares in the board can be null and this class contains methods which give the position of each square.
-- 
+- The board consists of Squares which have units on them. The unit class contains methods that tells which square the unit is occupying, which direction it is facing, the sprite of the unit and a utility method for the ghost AI.
