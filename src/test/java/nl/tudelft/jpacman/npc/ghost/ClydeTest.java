@@ -71,4 +71,46 @@ class ClydeTest {
         clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
         assertThat(clyde.nextAiMove()).isEqualTo(Optional.empty());
     }
+
+    /**
+     * As the test involves a player on the map, we register it using Level.registerPlayer().
+     * We can now test the OFF-point for the condition 'nearest == null' so taking it as not null.
+     */
+    @Test
+    void testNullCase2() {
+        Level level = ghostMapParser.parseMap(map);
+        //Putting both clyde and the player on the level
+        level.registerPlayer(player);
+        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
+        assertThat(clyde.nextAiMove()).isNotEqualTo(Optional.empty());
+    }
+
+    /**
+     * Testing the ON point for the condition 'path != null && !path.isEmpty()' and
+     * we expect the test to pass.
+     * Unit nearest = Navigation.findNearest(Player.class, getSquare())
+     * List<Direction> path = Navigation.shortestPath(getSquare(), target, this)
+     */
+    @Test
+    void testPathNotNull() {
+        Level level = ghostMapParser.parseMap(map);
+        level.registerPlayer(player);
+        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
+        Square target = Navigation.findNearest(player.getClass(), clyde.getSquare()).getSquare();
+        Direction direction = Navigation.shortestPath(clyde.getSquare(), target, clyde).get(0);
+        assertThat(clyde.nextAiMove()).isEqualTo(Optional.of(direction));
+    }
+
+    /**
+     * Testing the OFF point for the condition 'path != null && !path.isEmpty()'.
+     * Unit nearest = Navigation.findNearest(Player.class, getSquare())
+     * List<Direction> path = Navigation.shortestPath(getSquare(), target, this)
+     */
+    @Test
+    void testPathIsNull() {
+        Level level = ghostMapParser.parseMap(map);
+        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
+        Unit nearest = Navigation.findNearest(player.getClass(), clyde.getSquare());
+        assertThat(nearest).isEqualTo(null);
+    }
 }
