@@ -31,6 +31,15 @@ class ClydeTest {
     private PlayerFactory playerFactory;
     private Player player;
 
+    private static final Map<Direction, Direction> OPPOSITES = new EnumMap<>(Direction.class);
+
+    static {
+        OPPOSITES.put(Direction.NORTH, Direction.SOUTH);
+        OPPOSITES.put(Direction.SOUTH, Direction.NORTH);
+        OPPOSITES.put(Direction.WEST, Direction.EAST);
+        OPPOSITES.put(Direction.EAST, Direction.WEST);
+    }
+
     /**
      * Instantiating the GhostMapParser object.
      */
@@ -112,5 +121,37 @@ class ClydeTest {
         clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
         Unit nearest = Navigation.findNearest(player.getClass(), clyde.getSquare());
         assertThat(nearest).isEqualTo(null);
+    }
+
+    /**
+     * Testing the OFF point for the condition 'path.size() <= SHYNESS'.
+     */
+    @Test
+    void testShynessOff() {
+        Level level = ghostMapParser.parseMap(map);
+        level.registerPlayer(player);
+        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
+        Square target = Navigation.findNearest(player.getClass(), clyde.getSquare()).getSquare();
+        Direction direction = Navigation.shortestPath(clyde.getSquare(), target, clyde).get(0);
+        assertThat(clyde.nextAiMove()).isNotEqualTo(Optional.ofNullable(OPPOSITES.get(direction)));
+    }
+
+    /**
+     * Testing the ON point for the condition 'path.size() <= SHYNESS'.
+     */
+    @Test
+    void testShynessOn() {
+        List<String> newMap = new ArrayList<>();
+        newMap.add("########");
+        newMap.add("#P    C#");
+        newMap.add("########");
+
+        Level level = ghostMapParser.parseMap(newMap);
+        level.registerPlayer(player);
+        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
+        Square target = Navigation.findNearest(player.getClass(), clyde.getSquare()).getSquare();
+        Direction direction = Navigation.shortestPath(clyde.getSquare(), target, clyde).get(0);
+
+        assertThat(clyde.nextAiMove()).isEqualTo(Optional.ofNullable(OPPOSITES.get(direction)));
     }
 }
