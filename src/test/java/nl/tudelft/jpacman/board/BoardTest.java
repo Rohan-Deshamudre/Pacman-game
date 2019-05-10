@@ -14,6 +14,9 @@ class BoardTest {
     private Board board;
     private Square[][] grid;
 
+    private static final int WIDTH = 5;
+    private static final int HEIGHT = 5;
+
     /**
      * Construct a board with a (1 x 1) grid, with one
      * correct BasicSquare on it.
@@ -32,6 +35,8 @@ class BoardTest {
      * @param x Horizontal coordinate / the width component.
      * @param y Vertical coordinate / the height component.
      * We can construct a (5 x 5) matrix for this test.
+     * Due to the ON and OFF points for the boundaries, we expect 4 of the
+     * tests to pass (for the ON points) and the 4 to fail (for the OFF points)
      */
     @ParameterizedTest
     @CsvSource({
@@ -45,7 +50,7 @@ class BoardTest {
         "4, 3"
     })
     void testWithinBorders(int x, int y) {
-        grid = new Square[5][5];
+        grid = new Square[WIDTH][HEIGHT];
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 grid[i][j] = new BasicSquare();
