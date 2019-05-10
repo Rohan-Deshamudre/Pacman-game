@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 /**
  * Write at least 4 Junit tests for the nextAiMove() method.
  * 2 good weather cases & 2 bad weather cases.
@@ -69,7 +68,6 @@ class ClydeTest {
 
         ghosts = new ArrayList<>();
         clyde = ghostFactory.createClyde();
-        //clyde.setDirection(clyde.nextMove());
         ghosts.add(clyde);
         boardFactory.createGround().isAccessibleTo(clyde);
         clyde.occupy(boardFactory.createGround());
