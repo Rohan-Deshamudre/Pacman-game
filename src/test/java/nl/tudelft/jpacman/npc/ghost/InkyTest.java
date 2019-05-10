@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.LevelFactory;
 import nl.tudelft.jpacman.level.Player;
@@ -102,5 +103,89 @@ class InkyTest {
         level.registerPlayer(player);
         inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
         assertThat(inky.nextAiMove()).isEqualTo(Optional.empty());
+    }
+
+    /**
+     * Testing the condition 'blinky == null || player == null' - GOOD weather.
+     * Testing it where both BLINKY and PLAYER are on the level.
+     */
+    @Test
+    void testNeitherNull() {
+        map = new ArrayList<>();
+        map.add("#####################");
+        map.add("#I       #B#       P#");
+        map.add("#####################");
+
+        Level level = ghostMapParser.parseMap(map);
+        level.registerPlayer(player);
+        inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
+        blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
+
+        assertThat(inky.nextAiMove()).isNotEqualTo(Optional.empty());
+    }
+
+    /**
+     * Testing the condition 'path != null && !path.isEmpty()'.
+     * Square playerDest = player.squaresAheadOf(SQUARES_AHEAD)
+     * List<Direction> path = Navigation.shortestPath(getSquare(), playerDest, null)
+     * Tip: when there is no valid path --> the condition will not apply.
+     */
+    @Test
+    void testPathNull() {
+        map = new ArrayList<>();
+        map.add("#####################");
+        map.add("#I       #B#       P#");
+        map.add("#####################");
+
+        Level level = ghostMapParser.parseMap(map);
+        level.registerPlayer(player);
+        inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
+        blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
+
+        Square target = player.squaresAheadOf(2);
+        List<Direction> paths = Navigation.shortestPath(inky.getSquare(), target, null);
+        Direction path = paths.get(0);
+        assertThat(inky.nextAiMove()).isNotEqualTo(Optional.ofNullable(path));
+    }
+
+    /**
+     * Testing to affirm the condition 'path != null && !path.isEmpty()'.
+     * Square playerDest = player.squaresAheadOf(SQUARES_AHEAD)
+     * List<Direction> path = Navigation.shortestPath(getSquare(), playerDest, null)
+     */
+    @Test
+    void testPathNotNull() {
+        map = new ArrayList<>();
+        map.add("######################");
+        map.add("#B        #P#       I#");
+        map.add("######################");
+
+        Level level = ghostMapParser.parseMap(map);
+        level.registerPlayer(player);
+        inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
+        blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
+
+        Square target = player.squaresAheadOf(2);
+        List<Direction> route = Navigation.shortestPath(
+            blinky.getSquare(), target, inky);
+        Square destination = followPath(route, target);
+        List<Direction> paths = Navigation.shortestPath(
+            inky.getSquare(), destination, null);
+        Direction path = paths.get(0);
+        assertThat(inky.nextAiMove()).isEqualTo(Optional.ofNullable(path));
+    }
+
+    /**
+     * Working out the follow Path method.
+     * @param directions A list of the directions.
+     * @param begin The starting square.
+     * @return The modified starting square.
+     */
+    Square followPath(List<Direction> directions, Square begin) {
+        Square destination = begin;
+        for (Direction d : directions) {
+            destination = destination.getSquareAt(d);
+        }
+        return destination;
     }
 }
