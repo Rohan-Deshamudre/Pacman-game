@@ -1,6 +1,7 @@
 package nl.tudelft.jpacman.board;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,8 @@ class BoardTest {
     private Board board;
     private Square[][] grid;
 
-    private static final int WIDTH = 5;
-    private static final int HEIGHT = 5;
+    private static final int WIDTH = 2;
+    private static final int HEIGHT = 2;
 
     /**
      * Construct a board with a (1 x 1) grid, with one
@@ -34,22 +35,12 @@ class BoardTest {
      * Verify the desired behaviour of the boundary values of the board.
      * @param x Horizontal coordinate / the width component.
      * @param y Vertical coordinate / the height component.
-     * We can construct a (5 x 5) matrix for this test.
-     * Due to the ON and OFF points for the boundaries, we expect 4 of the
-     * tests to pass (for the ON points) and the 4 to fail (for the OFF points)
+     * We can construct a (2 x 2) matrix for this test.
+     * Testing ON Point boundaries.
      */
     @ParameterizedTest
-    @CsvSource({
-        "0, 1",
-        "-1, 2",
-        "5, 3",
-        "3, 4",
-        "1, 0",
-        "2, -1",
-        "3, 5",
-        "4, 3"
-    })
-    void testWithinBorders(int x, int y) {
+    @CsvSource({"0,0", "0,1", "1,0", "1,1"})
+    void testWithinBordersOnPoints(int x, int y) {
         grid = new Square[WIDTH][HEIGHT];
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
@@ -59,4 +50,25 @@ class BoardTest {
         board = new Board(grid);
         assertTrue(board.withinBorders(x, y));
     }
+
+    /**
+     * Verify the desired behaviour of the boundary values of the board.
+     * @param x Horizontal coordinate / the width component.
+     * @param y Vertical coordinate / the height component.
+     * We can construct a (2 x 2) matrix for this test.
+     * Testing OFF Point boundaries.
+     */
+    @ParameterizedTest
+    @CsvSource({"-1, -1", "2, -1", "-1, 2", "2, 2"})
+    void testWithinBordersOffPoints(int x, int y) {
+        grid = new Square[WIDTH][HEIGHT];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                grid[i][j] = new BasicSquare();
+            }
+        }
+        board = new Board(grid);
+        assertFalse(board.withinBorders(x, y));
+    }
+
 }
