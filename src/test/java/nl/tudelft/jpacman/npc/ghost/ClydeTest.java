@@ -28,26 +28,25 @@ import java.util.Optional;
  * 2 good weather cases & 2 bad weather cases.
  */
 class ClydeTest {
+
     private Ghost clyde;
     private List<Ghost> ghosts;
+    private List<String> map;
+    private Player player;
+    private GhostMapParser ghostMapParser;
 
     private LevelFactory lvlFactory;
     private BoardFactory boardFactory;
     private GhostFactory ghostFactory;
-
-    private GhostMapParser ghostMapParser;
-    private List<String> map;
-
     private PlayerFactory playerFactory;
-    private Player player;
 
     private static final Map<Direction, Direction> OPPOSITES = new EnumMap<>(Direction.class);
 
     static {
         OPPOSITES.put(Direction.NORTH, Direction.SOUTH);
         OPPOSITES.put(Direction.SOUTH, Direction.NORTH);
-        OPPOSITES.put(Direction.WEST, Direction.EAST);
         OPPOSITES.put(Direction.EAST, Direction.WEST);
+        OPPOSITES.put(Direction.WEST, Direction.EAST);
     }
 
     /**
