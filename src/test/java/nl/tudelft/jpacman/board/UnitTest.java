@@ -20,6 +20,7 @@ class UnitTest {
     @BeforeEach
     void setUp() {
         unit = new Unit() {
+            @Override
             public Sprite getSprite() {
                 return unit.getSprite();
             }
