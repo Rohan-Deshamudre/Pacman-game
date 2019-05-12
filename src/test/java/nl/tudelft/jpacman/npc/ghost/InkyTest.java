@@ -61,8 +61,6 @@ class InkyTest {
         blinky = ghostFactory.createBlinky();
         ghosts.add(inky);
         ghosts.add(blinky);
-
-        boardFactory.createGround().isAccessibleTo(inky);
         inky.occupy(boardFactory.createGround());
 
         //Creating the player - PacMan

@@ -68,7 +68,6 @@ class ClydeTest {
         ghosts = new ArrayList<>();
         clyde = ghostFactory.createClyde();
         ghosts.add(clyde);
-        boardFactory.createGround().isAccessibleTo(clyde);
         clyde.occupy(boardFactory.createGround());
 
         playerFactory = new PlayerFactory(sprites);
