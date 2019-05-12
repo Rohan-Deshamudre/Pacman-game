@@ -34,10 +34,13 @@ board.Direction
 - In the Arrange stage, the necessary setup for the test is done. The objects of the target class, mock setup (if required) and other variable initialization required is done at this stage. In order to avoid code repetition, in the arrange stage, all the code that is in common for all the tests targeting a single class can be put in a @BeforeEach method so that this code would not have to be repeated in each test and the @BeforeEach runs it automatically before each test.
 
 ###Exercise 15
->>
+>>What are the advantages of using "clean instances". Eg: setUp() method
+- Having a setup Method at the start that runs before each test avoid having to instantiate the same things in each of the tests separately. This avoid code duplication and keeps all the common code of all the tests in one place. The execution times also reduces. 
 
 ###Exercise 16
 >>assertEquals(1,a) ; or assertTrue(1==a). Which one is better and discuss the differences.
 - The assertEquals(1,a) is better because it provides better error information compared to assertTrue. If assertEquals(1,a) fails, it displays the expected result which is 1 and the actual result whereas assertTrue cannot give this information and only whether it was true or false.
 
-
+###Exercise 17
+>>Do the large private tests in MapParser need specific tests for them?
+- The private methods should not need specific tests, rather its effects on the public methods that call them need to be tested. Unit tests are clients of the object under test, much like the other classes in the code that are dependent on the object.  The test should only be accessing the class’ public interface. If an object is hard to test via its public interface, it is going to be hard to use in the production code.
