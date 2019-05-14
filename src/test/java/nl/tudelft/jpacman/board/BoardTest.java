@@ -35,7 +35,7 @@ class BoardTest {
      * Verify the desired behaviour of the boundary values of the board.
      * @param x Horizontal coordinate / the width component.
      * @param y Vertical coordinate / the height component.
-     * We can construct a (2 x 2) matrix for this test.
+     * We can construct a new matrix for this test.
      * Testing ON Point boundaries.
      */
     @ParameterizedTest
@@ -55,7 +55,7 @@ class BoardTest {
      * Verify the desired behaviour of the boundary values of the board.
      * @param x Horizontal coordinate / the width component.
      * @param y Vertical coordinate / the height component.
-     * We can construct a (2 x 2) matrix for this test.
+     * We can construct a new matrix for this test.
      * Testing OFF Point boundaries.
      */
     @ParameterizedTest
