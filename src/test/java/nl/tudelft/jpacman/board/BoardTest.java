@@ -15,8 +15,8 @@ class BoardTest {
     private Board board;
     private Square[][] grid;
 
-    private static final int WIDTH = 2;
-    private static final int HEIGHT = 2;
+    private static final int WIDTH = 5;
+    private static final int HEIGHT = 5;
 
     /**
      * Construct a board with a (1 x 1) grid, with one
@@ -39,7 +39,7 @@ class BoardTest {
      * Testing ON Point boundaries.
      */
     @ParameterizedTest
-    @CsvSource({"0,0", "0,1", "1,0", "1,1"})
+    @CsvSource({"0, 1", "3, 4", "1, 0", "4, 3"})
     void testWithinBordersOnPoints(int x, int y) {
         grid = new Square[WIDTH][HEIGHT];
         for (int i = 0; i < grid.length; i++) {
@@ -59,7 +59,7 @@ class BoardTest {
      * Testing OFF Point boundaries.
      */
     @ParameterizedTest
-    @CsvSource({"-1, -1", "2, -1", "-1, 2", "2, 2"})
+    @CsvSource({"-1, 2", "5, 3", "2, -1", "3, 5"})
     void testWithinBordersOffPoints(int x, int y) {
         grid = new Square[WIDTH][HEIGHT];
         for (int i = 0; i < grid.length; i++) {
@@ -70,5 +70,4 @@ class BoardTest {
         board = new Board(grid);
         assertFalse(board.withinBorders(x, y));
     }
-
 }
