@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mock;
 
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
-import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.LevelFactory;
 import nl.tudelft.jpacman.level.Player;
@@ -25,7 +24,6 @@ import java.util.Optional;
  * 2 good weather tests and 3 bad weather tests.
  * Inky takes into consideration : Blinky's location, 2 spaces ahead of Pac-Man
  * Draws a line between Blinky & 2 spaces ahead of Pac-Man & doubles it.
- * Inky & Blinky < Pac-Man      -Inky follows Blinky
  * Blinky < Pac-Man < Inky      -Inky usually moves away
  */
 class InkyTest {
@@ -66,12 +64,12 @@ class InkyTest {
         //Creating the player - PacMan
         playerFactory = new PlayerFactory(sprites);
         player = playerFactory.createPacMan();
-        player.setDirection(Direction.WEST);
     }
 
     /**
-     * Testing the condition 'blinky == null || player == null' - BAD weather.
-     * The PLAYER is not on the level so findNearest will return null.
+     * Testing the condition 'blinky == null || player == null'.
+     * The PLAYER is not on the level so findNearest will return null
+     * This is a bad weather test
      */
     @Test
     void testPlayerNull() {
@@ -83,12 +81,14 @@ class InkyTest {
         Level level = ghostMapParser.parseMap(map);
         inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
         blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
+
         assertThat(inky.nextAiMove()).isEqualTo(Optional.empty());
     }
 
     /**
-     * Testing the condition 'blinky == null || player == null' - BAD weather.
-     * The ghost BLINKY is not on the level so findNearest will return null.
+     * Testing the condition 'blinky == null || player == null'.
+     * The ghost BLINKY is not on the level so findNearest will return null
+     * This is another bad weather test
      */
     @Test
     void testBlinkyNull() {
@@ -99,91 +99,91 @@ class InkyTest {
 
         Level level = ghostMapParser.parseMap(map);
         level.registerPlayer(player);
+        player.setDirection(Direction.NORTH);
         inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
+
         assertThat(inky.nextAiMove()).isEqualTo(Optional.empty());
     }
 
     /**
-     * Testing the condition 'blinky == null || player == null' - GOOD weather.
-     * Testing it where both BLINKY and PLAYER are on the level.
+     * Testing the next condition 'path != null && !path.isEmpty()'.
+     * Since there is no valid path as per the map, the condition will not apply.
+     * There is no shortest path from inky's square to the player destination and
+     * the array list does not contain any directions.
+     * This is a bad weather test
      */
     @Test
-    void testNeitherNull() {
+    void testPathEmpty() {
         map = new ArrayList<>();
         map.add("#####################");
-        map.add("#I       #B#       P#");
+        map.add("#P                   ");
+        map.add("#####################");
+        map.add("#B                 I#");
         map.add("#####################");
 
         Level level = ghostMapParser.parseMap(map);
         level.registerPlayer(player);
+        player.setDirection(Direction.NORTH);
         inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
         blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
 
-        assertThat(inky.nextAiMove()).isNotEqualTo(Optional.empty());
+        assertThat(inky.nextAiMove()).isEqualTo(Optional.empty());
     }
 
     /**
      * Testing the condition 'path != null && !path.isEmpty()'.
-     * Square playerDest = player.squaresAheadOf(SQUARES_AHEAD)
-     * List<Direction> path = Navigation.shortestPath(getSquare(), playerDest, null)
-     * Tip: when there is no valid path --> the condition will not apply.
-     */
-    @Test
-    void testPathNull() {
-        map = new ArrayList<>();
-        map.add("#####################");
-        map.add("#I       #B#       P#");
-        map.add("#####################");
-
-        Level level = ghostMapParser.parseMap(map);
-        level.registerPlayer(player);
-        inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
-        blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
-
-        Square target = player.squaresAheadOf(2);
-        List<Direction> paths = Navigation.shortestPath(inky.getSquare(), target, null);
-        Direction path = paths.get(0);
-        assertThat(inky.nextAiMove()).isNotEqualTo(Optional.ofNullable(path));
-    }
-
-    /**
-     * Testing to affirm the condition 'path != null && !path.isEmpty()'.
-     * Square playerDest = player.squaresAheadOf(SQUARES_AHEAD)
-     * List<Direction> path = Navigation.shortestPath(getSquare(), playerDest, null)
+     *
+     * Again, there is a valid path from Inky to the destination square and so
+     * the shortestPath() does work, providing an array list of directions
+     *
+     * If INKY is alongside BLINKY when they are behind Pac-Man, INKY will usually
+     * follow BLINKY the whole time.
+     *
+     * This is a good weather test.
      */
     @Test
     void testPathNotNull() {
         map = new ArrayList<>();
         map.add("######################");
-        map.add("#B        #P#       I#");
+        map.add("#      I  B    P     #");
         map.add("######################");
 
         Level level = ghostMapParser.parseMap(map);
         level.registerPlayer(player);
+        player.setDirection(Direction.WEST);
         inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
         blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
 
-        Square target = player.squaresAheadOf(2);
-        List<Direction> route = Navigation.shortestPath(
-            blinky.getSquare(), target, inky);
-        Square destination = followPath(route, target);
-        List<Direction> paths = Navigation.shortestPath(
-            inky.getSquare(), destination, null);
-        Direction path = paths.get(0);
-        assertThat(inky.nextAiMove()).isEqualTo(Optional.ofNullable(path));
+        assertThat(inky.nextAiMove()).isEqualTo(Optional.ofNullable(blinky.getDirection()));
     }
 
     /**
-     * Working out the follow Path method.
-     * @param directions A list of the directions.
-     * @param begin The starting square.
-     * @return The modified starting square.
+     * Testing the condition 'path != null && !path.isEmpty()'.
+     *
+     * Again, there is a valid path from Inky to the destination square and so
+     * the shortestPath() does work, providing an array list of directions
+     *
+     * Since BLINKY is far behind Pac-Man with INKY ahead, INKY moves away from
+     * the Pac-Man.
+     *
+     * This is a good weather test.
      */
-    Square followPath(List<Direction> directions, Square begin) {
-        Square destination = begin;
-        for (Direction d : directions) {
-            destination = destination.getSquareAt(d);
-        }
-        return destination;
+    @Test
+    void testPathNotNull2() {
+        map = new ArrayList<>();
+        map.add("######################");
+        map.add("#             P      #");
+        map.add("#     I              #");
+        map.add("#                    #");
+        map.add("#   B                #");
+        map.add("######################");
+
+        Level level = ghostMapParser.parseMap(map);
+        level.registerPlayer(player);
+        player.setDirection(Direction.SOUTH);
+        inky = Navigation.findUnitInBoard(inky.getClass(), level.getBoard());
+        blinky = Navigation.findUnitInBoard(blinky.getClass(), level.getBoard());
+
+        assertThat(inky.nextAiMove()).isEqualTo(Optional.ofNullable(Direction.WEST));
     }
 }
