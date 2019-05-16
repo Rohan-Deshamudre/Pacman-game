@@ -5,8 +5,6 @@ import static org.mockito.Mockito.mock;
 
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
-import nl.tudelft.jpacman.board.Square;
-import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.LevelFactory;
 import nl.tudelft.jpacman.level.Player;
@@ -28,7 +26,6 @@ import java.util.Optional;
  * 2 good weather cases & 2 bad weather cases.
  */
 class ClydeTest {
-
     private Ghost clyde;
     private List<Ghost> ghosts;
     private List<String> map;
@@ -61,9 +58,9 @@ class ClydeTest {
         ghostMapParser = new GhostMapParser(lvlFactory, boardFactory, ghostFactory);
 
         map = new ArrayList<>();
-        map.add("############");
-        map.add("#P        C#");
-        map.add("############");
+        map.add("#############");
+        map.add("#P         C#");
+        map.add("#############");
 
         ghosts = new ArrayList<>();
         clyde = ghostFactory.createClyde();
@@ -77,33 +74,39 @@ class ClydeTest {
 
     /**
      * Building the level based on map.
-     * MapParser.parseMap() receives the map and returns Level that uses the same map.
-     * We can now test the IN-point for the condition 'nearest == null' so taking it to be null.
+     * MapParser.parseMap() receives the map and returns Level that uses the same map
+     * We can write a bad weather test for the condition 'nearest == null'
      */
     @Test
     void testNullCase() {
         Level level = ghostMapParser.parseMap(map);
         //Put clyde on the level but NOT the player
         clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
+
         assertThat(clyde.nextAiMove()).isEqualTo(Optional.empty());
     }
 
     /**
-     * As the test involves a player on the map, we register it using Level.registerPlayer().
-     * We can now test the OFF-point for the condition 'nearest == null' so taking it as not null.
+     * Writing a test for the condition 'path != null && !path.isEmpty()' - bad weather.
      */
     @Test
-    void testNullCase2() {
-        Level level = ghostMapParser.parseMap(map);
-        //Putting both clyde and the player on the level
+    void testPathNull() {
+        List<String> newMap = new ArrayList<>();
+        newMap.add("################");
+        newMap.add("#P              ");
+        newMap.add("################");
+        newMap.add("              C#");
+        newMap.add("################");
+
+        Level level = ghostMapParser.parseMap(newMap);
         level.registerPlayer(player);
         clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
-        assertThat(clyde.nextAiMove()).isNotEqualTo(Optional.empty());
+
+        assertThat(clyde.nextAiMove()).isEqualTo(Optional.empty());
     }
 
     /**
-     * Testing the ON point for the condition 'path != null && !path.isEmpty()' and
-     * we expect the test to pass.
+     * Writing a good weather test for the condition 'path != null && !path.isEmpty()'.
      * Unit nearest = Navigation.findNearest(Player.class, getSquare())
      * List<Direction> path = Navigation.shortestPath(getSquare(), target, this)
      */
@@ -112,42 +115,15 @@ class ClydeTest {
         Level level = ghostMapParser.parseMap(map);
         level.registerPlayer(player);
         clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
-        Square target = Navigation.findNearest(player.getClass(), clyde.getSquare()).getSquare();
-        Direction direction = Navigation.shortestPath(clyde.getSquare(), target, clyde).get(0);
-        assertThat(clyde.nextAiMove()).isEqualTo(Optional.of(direction));
+
+        assertThat(clyde.nextAiMove()).isEqualTo(Optional.of(Direction.WEST));
     }
 
     /**
-     * Testing the OFF point for the condition 'path != null && !path.isEmpty()'.
-     * Unit nearest = Navigation.findNearest(Player.class, getSquare())
-     * List<Direction> path = Navigation.shortestPath(getSquare(), target, this)
+     * We can write a test for the condition 'path.size() <= SHYNESS'.
      */
     @Test
-    void testPathIsNull() {
-        Level level = ghostMapParser.parseMap(map);
-        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
-        Unit nearest = Navigation.findNearest(player.getClass(), clyde.getSquare());
-        assertThat(nearest).isEqualTo(null);
-    }
-
-    /**
-     * Testing the OFF point for the condition 'path.size() <= SHYNESS'.
-     */
-    @Test
-    void testShynessOff() {
-        Level level = ghostMapParser.parseMap(map);
-        level.registerPlayer(player);
-        clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
-        Square target = Navigation.findNearest(player.getClass(), clyde.getSquare()).getSquare();
-        Direction direction = Navigation.shortestPath(clyde.getSquare(), target, clyde).get(0);
-        assertThat(clyde.nextAiMove()).isNotEqualTo(Optional.ofNullable(OPPOSITES.get(direction)));
-    }
-
-    /**
-     * Testing the ON point for the condition 'path.size() <= SHYNESS'.
-     */
-    @Test
-    void testShynessOn() {
+    void testShyness() {
         List<String> newMap = new ArrayList<>();
         newMap.add("########");
         newMap.add("#P    C#");
@@ -156,9 +132,8 @@ class ClydeTest {
         Level level = ghostMapParser.parseMap(newMap);
         level.registerPlayer(player);
         clyde = Navigation.findUnitInBoard(clyde.getClass(), level.getBoard());
-        Square target = Navigation.findNearest(player.getClass(), clyde.getSquare()).getSquare();
-        Direction direction = Navigation.shortestPath(clyde.getSquare(), target, clyde).get(0);
 
-        assertThat(clyde.nextAiMove()).isEqualTo(Optional.ofNullable(OPPOSITES.get(direction)));
+        assertThat(clyde.nextAiMove()).isEqualTo(
+            Optional.ofNullable(OPPOSITES.get(Direction.WEST)));
     }
 }
