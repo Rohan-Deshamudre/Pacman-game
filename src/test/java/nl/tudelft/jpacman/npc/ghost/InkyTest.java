@@ -21,10 +21,8 @@ import java.util.Optional;
 
 /**
  * Write at least 5 junit tests for the nextAiMove() method.
- * 2 good weather tests and 3 bad weather tests.
  * Inky takes into consideration : Blinky's location, 2 spaces ahead of Pac-Man
- * Draws a line between Blinky & 2 spaces ahead of Pac-Man & doubles it.
- * Blinky < Pac-Man < Inky      -Inky usually moves away
+ * It draws a line between Blinky & 2 spaces ahead of Pac-Man & doubles it.
  */
 class InkyTest {
     private Ghost inky;
@@ -133,11 +131,11 @@ class InkyTest {
     /**
      * Testing the condition 'path != null && !path.isEmpty()'.
      *
-     * Again, there is a valid path from Inky to the destination square and so
+     * There is a valid path from Inky to the destination square and so
      * the shortestPath() does work, providing an array list of directions
      *
-     * If INKY is alongside BLINKY when they are behind Pac-Man, INKY will usually
-     * follow BLINKY the whole time.
+     * If Inky is alongside Blinky when they are behind Pac-Man, Inky will usually
+     * follow Blinky the whole time.
      *
      * This is a good weather test.
      */
@@ -163,7 +161,7 @@ class InkyTest {
      * Again, there is a valid path from Inky to the destination square and so
      * the shortestPath() does work, providing an array list of directions
      *
-     * Since BLINKY is far behind Pac-Man with INKY ahead, INKY moves away from
+     * Since Blinky is far behind Pac-Man with Inky ahead, Inky moves away from
      * the Pac-Man.
      *
      * This is a good weather test.
