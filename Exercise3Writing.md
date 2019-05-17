@@ -26,6 +26,11 @@ board.Direction
 - Level is linked to board. The board is a grid of squares and is created in the Board class. None of the squares in the board can be null and this class contains methods which give the position of each square.
 - The board consists of Squares which have units on them. The unit class contains methods that tells which square the unit is occupying, which direction it is facing, the sprite of the unit and a utility method for the ghost AI.
 
+## 3.3
+###Exercise 12
+![image info](doc/img/Category partition method table.PNG)
+)
+
 
 ## 3.4 Understanding your tests
 
