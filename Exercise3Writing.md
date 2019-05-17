@@ -43,4 +43,8 @@ board.Direction
 
 ###Exercise 17
 >>Do the large private tests in MapParser need specific tests for them?
-- The private methods should not need specific tests, rather its effects on the public methods that call them need to be tested. Unit tests are clients of the object under test, much like the other classes in the code that are dependent on the object.  The test should only be accessing the class’ public interface. If an object is hard to test via its public interface, it is going to be hard to use in the production code.
+- The private methods should not need specific tests, rather its effects on the public methods that call them need to be tested. Unit tests are clients of the object under test, much like the other classes in the code that are dependent on the object. The test should only be accessing the class’ public interface. 
+
+## 3.5 Submit Part I
+###Exercise 18
+-The code has no checkstyle errors, or spotbug violations. With the new test classes, the movements of Ghosts Clyde and Inky are tested now to make sure they behave like they are meant to. Parameterized tests are also added for the board to cover the on and off points of the boundaries. The test coverage has increased to 78% and all the tests pass and since there are no checkstyle or spotbug violations, the continuous integration also passes. The git behaviour was good as we made merge requests to merge branches and the commits were also given good messages.
