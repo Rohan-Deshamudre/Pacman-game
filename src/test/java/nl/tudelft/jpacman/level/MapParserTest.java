@@ -10,6 +10,7 @@ import nl.tudelft.jpacman.points.PointCalculator;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ class MapParserTest {
 
         Mockito.verify(levelFactory).createPellet();
         Mockito.verify(boardFactory).createGround();
+        Mockito.verify(pellet).occupy(square);
     }
 
     /**
@@ -98,20 +100,20 @@ class MapParserTest {
     @Test
     void testCreateGhost() {
 
-        Ghost ghost = new LevelFactory(
-            sprites, new GhostFactory(sprites), Mockito.mock(PointCalculator.class)).createGhost();
-        Mockito.when(levelFactory.createGhost()).thenReturn(ghost);
-
-        Mockito.when(boardFactory.createGround()).thenReturn(
-            new BoardFactory(sprites).createGround()
-        );
-
         List<String> map = new ArrayList<>();
         map.add("G");
+
+        Ghost ghost = Mockito.mock(Ghost.class);
+        Mockito.when(levelFactory.createGhost()).thenReturn(ghost);
+
+        Square square = Mockito.mock(Square.class);
+        Mockito.when(boardFactory.createGround()).thenReturn(square);
+
         mapParser.parseMap(map);
 
         Mockito.verify(levelFactory).createGhost();
         Mockito.verify(boardFactory).createGround();
+        Mockito.verify(ghost).occupy(square);
     }
 
     /**
