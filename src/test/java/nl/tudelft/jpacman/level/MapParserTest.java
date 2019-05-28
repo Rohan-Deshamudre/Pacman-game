@@ -82,12 +82,11 @@ class MapParserTest {
      */
     @Test
     void testCreatePellet() {
-        Pellet pellet = new Pellet(10, sprites.getPelletSprite());
+        Pellet pellet = Mockito.mock(Pellet.class);
         Mockito.when(levelCreatorMock.createPellet()).thenReturn(pellet);
 
-        Mockito.when(boardCreatorMock.createGround()).thenReturn(
-            new BoardFactory(sprites).createGround()
-        );
+        Square square = Mockito.mock(Square.class);
+        Mockito.when(boardCreatorMock.createGround()).thenReturn(square);
 
         List<String> map = new ArrayList<>();
         map.add(".");
@@ -102,6 +101,7 @@ class MapParserTest {
      */
     @Test
     void testCreateGhost() {
+
         Ghost ghost = new LevelFactory(
             sprites, new GhostFactory(sprites), Mockito.mock(PointCalculator.class)).createGhost();
         Mockito.when(levelCreatorMock.createGhost()).thenReturn(ghost);
@@ -123,9 +123,9 @@ class MapParserTest {
      */
     @Test
     void testCreatePlayer() {
-        Mockito.when(boardCreatorMock.createGround()).thenReturn(
-            new BoardFactory(sprites).createGround()
-        );
+
+        Square square = Mockito.mock(Square.class);
+        Mockito.when(boardCreatorMock.createGround()).thenReturn(square);
 
         List<String> map = new ArrayList<>();
         map.add("P");
