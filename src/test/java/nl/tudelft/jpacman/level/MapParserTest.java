@@ -1,6 +1,5 @@
 package nl.tudelft.jpacman.level;
 
-import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
@@ -11,7 +10,6 @@ import nl.tudelft.jpacman.points.PointCalculator;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -26,14 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MapParserTest {
     private MapParser mapParser;
-
     private PacManSprites sprites;
 
-    private LevelFactory levelCreatorMock;
-
-    private BoardFactory boardCreatorMock;
-
-    private PlayerFactory playerCreatorMock;
+    private LevelFactory levelFactory;
+    private BoardFactory boardFactory;
+    private PlayerFactory playerFactory;
 
     private Ghost ghost;
     private Player player;
@@ -45,12 +40,12 @@ class MapParserTest {
     void setMapParser() {
         sprites = new PacManSprites();
 
-        levelCreatorMock = Mockito.mock(LevelFactory.class);
-        boardCreatorMock = Mockito.mock(BoardFactory.class);
+        levelFactory = Mockito.mock(LevelFactory.class);
+        boardFactory = Mockito.mock(BoardFactory.class);
+        playerFactory = Mockito.mock(PlayerFactory.class);
 
-        mapParser = new MapParser(levelCreatorMock, boardCreatorMock);
+        mapParser = new MapParser(levelFactory, boardFactory);
 
-        playerCreatorMock = Mockito.mock(PlayerFactory.class);
     }
 
     /**
@@ -62,7 +57,7 @@ class MapParserTest {
         map.add(" ");
         mapParser.parseMap(map);
 
-        Mockito.verify(boardCreatorMock).createGround();
+        Mockito.verify(boardFactory).createGround();
     }
 
     /**
@@ -74,7 +69,7 @@ class MapParserTest {
         map.add("#");
         mapParser.parseMap(map);
 
-        Mockito.verify(boardCreatorMock).createWall();
+        Mockito.verify(boardFactory).createWall();
     }
 
     /**
@@ -82,18 +77,19 @@ class MapParserTest {
      */
     @Test
     void testCreatePellet() {
-        Pellet pellet = Mockito.mock(Pellet.class);
-        Mockito.when(levelCreatorMock.createPellet()).thenReturn(pellet);
-
-        Square square = Mockito.mock(Square.class);
-        Mockito.when(boardCreatorMock.createGround()).thenReturn(square);
-
         List<String> map = new ArrayList<>();
         map.add(".");
+
+        Pellet pellet = Mockito.mock(Pellet.class);
+        Mockito.when(levelFactory.createPellet()).thenReturn(pellet);
+
+        Square square = Mockito.mock(Square.class);
+        Mockito.when(boardFactory.createGround()).thenReturn(square);
+
         mapParser.parseMap(map);
 
-        Mockito.verify(levelCreatorMock).createPellet();
-        Mockito.verify(boardCreatorMock).createGround();
+        Mockito.verify(levelFactory).createPellet();
+        Mockito.verify(boardFactory).createGround();
     }
 
     /**
@@ -104,9 +100,9 @@ class MapParserTest {
 
         Ghost ghost = new LevelFactory(
             sprites, new GhostFactory(sprites), Mockito.mock(PointCalculator.class)).createGhost();
-        Mockito.when(levelCreatorMock.createGhost()).thenReturn(ghost);
+        Mockito.when(levelFactory.createGhost()).thenReturn(ghost);
 
-        Mockito.when(boardCreatorMock.createGround()).thenReturn(
+        Mockito.when(boardFactory.createGround()).thenReturn(
             new BoardFactory(sprites).createGround()
         );
 
@@ -114,8 +110,8 @@ class MapParserTest {
         map.add("G");
         mapParser.parseMap(map);
 
-        Mockito.verify(levelCreatorMock).createGhost();
-        Mockito.verify(boardCreatorMock).createGround();
+        Mockito.verify(levelFactory).createGhost();
+        Mockito.verify(boardFactory).createGround();
     }
 
     /**
@@ -125,13 +121,13 @@ class MapParserTest {
     void testCreatePlayer() {
 
         Square square = Mockito.mock(Square.class);
-        Mockito.when(boardCreatorMock.createGround()).thenReturn(square);
+        Mockito.when(boardFactory.createGround()).thenReturn(square);
 
         List<String> map = new ArrayList<>();
         map.add("P");
         mapParser.parseMap(map);
 
-        Mockito.verify(boardCreatorMock).createGround();
+        Mockito.verify(boardFactory).createGround();
     }
 
     /**
@@ -156,6 +152,6 @@ class MapParserTest {
             player.getClass(), level.getBoard())).isNotEqualTo(null);
         assertThat(Navigation.findUnitInBoard(
             ghost.getClass(), level.getBoard())).isEqualTo(null);
-        Mockito.verify(boardCreatorMock);
+        Mockito.verify(boardFactory);
     }
 }
