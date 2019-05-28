@@ -7,6 +7,7 @@ import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.npc.ghost.GhostFactory;
 import nl.tudelft.jpacman.npc.ghost.Navigation;
+import nl.tudelft.jpacman.points.PointCalculator;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,6 @@ class MapParserTest {
 
     private BoardFactory boardCreatorMock;
 
-    private GhostFactory ghostCreatorMock;
-
     private PlayerFactory playerCreatorMock;
 
     private Ghost ghost;
@@ -51,7 +50,6 @@ class MapParserTest {
 
         mapParser = new MapParser(levelCreatorMock, boardCreatorMock);
 
-        ghostCreatorMock = Mockito.mock(GhostFactory.class);
         playerCreatorMock = Mockito.mock(PlayerFactory.class);
     }
 
@@ -103,16 +101,20 @@ class MapParserTest {
      * Testing create Ghost.
      */
     @Test
-    void testGhost() {
-        List<Ghost> ghosts = new ArrayList<>();
-        Square square = boardCreatorMock.createGround();
-        ghosts.add(levelCreatorMock.createGhost());
-        levelCreatorMock.createGhost().occupy(square);
+    void testCreateGhost() {
+        Ghost ghost = new LevelFactory(
+            sprites, new GhostFactory(sprites), Mockito.mock(PointCalculator.class)).createGhost();
+        Mockito.when(levelCreatorMock.createGhost()).thenReturn(ghost);
+
+        Mockito.when(boardCreatorMock.createGround()).thenReturn(
+            new BoardFactory(sprites).createGround()
+        );
 
         List<String> map = new ArrayList<>();
         map.add("G");
         mapParser.parseMap(map);
 
+        Mockito.verify(levelCreatorMock).createGhost();
         Mockito.verify(boardCreatorMock).createGround();
     }
 
@@ -120,10 +122,17 @@ class MapParserTest {
      * Testing create Pac-Man.
      */
     @Test
-    void testPacMan() {
-        //
-    }
+    void testCreatePlayer() {
+        Mockito.when(boardCreatorMock.createGround()).thenReturn(
+            new BoardFactory(sprites).createGround()
+        );
 
+        List<String> map = new ArrayList<>();
+        map.add("P");
+        mapParser.parseMap(map);
+
+        Mockito.verify(boardCreatorMock).createGround();
+    }
 
     /**
      * Testing a map with multiple variables.
