@@ -10,6 +10,7 @@ import nl.tudelft.jpacman.npc.ghost.Navigation;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -52,17 +53,80 @@ class MapParserTest {
 
         ghostCreatorMock = Mockito.mock(GhostFactory.class);
         playerCreatorMock = Mockito.mock(PlayerFactory.class);
-
-        /*
-        ghost = levelCreatorMock.createGhost();
-        ghost.occupy(boardCreatorMock.createGround());
-
-        player = playerCreatorMock.createPacMan();
-        */
     }
 
     /**
-     * Testing the parse map method.
+     * Testing create ground.
+     */
+    @Test
+    void testCreateGround() {
+        List<String> map = new ArrayList<>();
+        map.add(" ");
+        mapParser.parseMap(map);
+
+        Mockito.verify(boardCreatorMock).createGround();
+    }
+
+    /**
+     * Testing create Wall.
+     */
+    @Test
+    void testCreateWall() {
+        List<String> map = new ArrayList<>();
+        map.add("#");
+        mapParser.parseMap(map);
+
+        Mockito.verify(boardCreatorMock).createWall();
+    }
+
+    /**
+     * Testing create Pellet.
+     */
+    @Test
+    void testCreatePellet() {
+        Pellet pellet = new Pellet(10, sprites.getPelletSprite());
+        Mockito.when(levelCreatorMock.createPellet()).thenReturn(pellet);
+
+        Mockito.when(boardCreatorMock.createGround()).thenReturn(
+            new BoardFactory(sprites).createGround()
+        );
+
+        List<String> map = new ArrayList<>();
+        map.add(".");
+        mapParser.parseMap(map);
+
+        Mockito.verify(levelCreatorMock).createPellet();
+        Mockito.verify(boardCreatorMock).createGround();
+    }
+
+    /**
+     * Testing create Ghost.
+     */
+    @Test
+    void testGhost() {
+        List<Ghost> ghosts = new ArrayList<>();
+        Square square = boardCreatorMock.createGround();
+        ghosts.add(levelCreatorMock.createGhost());
+        levelCreatorMock.createGhost().occupy(square);
+
+        List<String> map = new ArrayList<>();
+        map.add("G");
+        mapParser.parseMap(map);
+
+        Mockito.verify(boardCreatorMock).createGround();
+    }
+
+    /**
+     * Testing create Pac-Man.
+     */
+    @Test
+    void testPacMan() {
+        //
+    }
+
+
+    /**
+     * Testing a map with multiple variables.
      */
     @Test
     void testParseMap() {
@@ -84,27 +148,5 @@ class MapParserTest {
         assertThat(Navigation.findUnitInBoard(
             ghost.getClass(), level.getBoard())).isEqualTo(null);
         Mockito.verify(boardCreatorMock);
-    }
-
-    /**
-     * Testing create ground.
-     */
-    @Test
-    void testCreateGround() {
-        List<String> map = new ArrayList<>();
-        map.add(" ");
-        mapParser.parseMap(map);
-        Mockito.verify(boardCreatorMock).createGround();
-    }
-
-    /**
-     * Testing create Wall.
-     */
-    @Test
-    void testCreateWall() {
-        List<String> map = new ArrayList<>();
-        map.add("#");
-        mapParser.parseMap(map);
-        Mockito.verify(boardCreatorMock).createWall();
     }
 }
