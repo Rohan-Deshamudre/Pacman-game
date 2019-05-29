@@ -1,5 +1,6 @@
 package nl.tudelft.jpacman.level;
 
+import nl.tudelft.jpacman.PacmanConfigurationException;
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing the MapParser class.
@@ -119,5 +121,72 @@ class MapParserTest {
         mapParser.parseMap(map);
 
         Mockito.verify(boardFactory).createGround();
+    }
+
+    //Bad weather tests
+    /**
+     * First bad weather, testing illegal characters.
+     */
+    @Test
+    void testIllegalCharacters() {
+        List<String> map = new ArrayList<>();
+        map.add("hgjfhgjfhgjhg");
+
+        assertThrows(
+            PacmanConfigurationException.class,
+            () -> mapParser.parseMap(map), "Invalid character");
+    }
+
+    /**
+     * Second bad weather, testing a null map.
+     */
+    @Test
+    void testNullString() {
+        List<String> map = null;
+
+        assertThrows(
+            PacmanConfigurationException.class,
+            () -> mapParser.parseMap(map), "Input text cannot be null.");
+    }
+
+    /**
+     * Third bad weather test, testing an empty map.
+     */
+    @Test
+    void testEmptyString() {
+        List<String> map = new ArrayList<>();
+        map.add("");
+
+        assertThrows(
+            PacmanConfigurationException.class,
+            () -> mapParser.parseMap(map), "Input text must consist of at least 1 row.");
+    }
+
+    /**
+     * Fourth bad weather, testing the width = 0.
+     */
+    @Test
+    void testWidthEqualsZero() {
+        List<String> map = new ArrayList<>();
+        map.add("");
+        map.add("");
+
+        assertThrows(
+            PacmanConfigurationException.class,
+            () -> mapParser.parseMap(map), "Input text lines cannot be empty.");
+    }
+
+    /**
+     * Fifth bad weather, testing that length & width aren't same.
+     */
+    @Test
+    void testNotSquare() {
+        List<String> map = new ArrayList<>();
+        map.add("##");
+        map.add("#");
+
+        assertThrows(
+            PacmanConfigurationException.class,
+            () -> mapParser.parseMap(map), "Input text lines are not of equal width.");
     }
 }
