@@ -25,28 +25,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MapParserTest {
     private MapParser mapParser;
-    private PacManSprites sprites;
 
     private LevelFactory levelFactory;
     private BoardFactory boardFactory;
-    private PlayerFactory playerFactory;
-
-    private Ghost ghost;
-    private Player player;
 
     /**
      * Set up.
      */
     @BeforeEach
     void setMapParser() {
-        sprites = new PacManSprites();
-
         levelFactory = Mockito.mock(LevelFactory.class);
         boardFactory = Mockito.mock(BoardFactory.class);
-        playerFactory = Mockito.mock(PlayerFactory.class);
 
         mapParser = new MapParser(levelFactory, boardFactory);
-
     }
 
     /**
@@ -99,7 +90,6 @@ class MapParserTest {
      */
     @Test
     void testCreateGhost() {
-
         List<String> map = new ArrayList<>();
         map.add("G");
 
@@ -121,7 +111,6 @@ class MapParserTest {
      */
     @Test
     void testCreatePlayer() {
-
         Square square = Mockito.mock(Square.class);
         Mockito.when(boardFactory.createGround()).thenReturn(square);
 
@@ -130,30 +119,5 @@ class MapParserTest {
         mapParser.parseMap(map);
 
         Mockito.verify(boardFactory).createGround();
-    }
-
-    /**
-     * Testing a map with multiple variables.
-     */
-    @Test
-    void testParseMap() {
-        List<String> map = new ArrayList<>();
-        map.add("################");
-        map.add(" G        P     ");
-        map.add("                ");
-        map.add("################");
-
-        Level level = mapParser.parseMap(map);
-        level.registerPlayer(player);
-        player.setDirection(Direction.EAST);
-        //ghost = Navigation.findUnitInBoard(ghost.getClass(), level.getBoard());
-
-        assertThat(level).isNotEqualTo(null);
-        assertThat(level.getBoard()).isNotEqualTo(null);
-        assertThat(Navigation.findUnitInBoard(
-            player.getClass(), level.getBoard())).isNotEqualTo(null);
-        assertThat(Navigation.findUnitInBoard(
-            ghost.getClass(), level.getBoard())).isEqualTo(null);
-        Mockito.verify(boardFactory);
     }
 }
