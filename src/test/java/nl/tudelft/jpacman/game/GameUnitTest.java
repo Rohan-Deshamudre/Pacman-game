@@ -1,14 +1,15 @@
 package nl.tudelft.jpacman.game;
 
-import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.level.Level;
-import nl.tudelft.jpacman.level.Pellet;
 import nl.tudelft.jpacman.level.Player;
-import nl.tudelft.jpacman.npc.ghost.Navigation;
 import nl.tudelft.jpacman.points.PointCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Testing the game.Start() method.
@@ -32,19 +33,26 @@ class GameUnitTest {
     }
 
     /**
-     * The first test, testing the ...
+     * The first test, testing the if statements.
      */
     @Test
     void testGetLevel() {
         Mockito.when(level.isInProgress()).thenReturn(game.isInProgress());
         Mockito.when(level.isAnyPlayerAlive()).thenReturn(!game.getPlayers().isEmpty());
-        Mockito.when(level.remainingPellets()).thenReturn(0);
+        Mockito.when(level.remainingPellets()).thenReturn(1);
 
-        //
-
-//        Mockito.verify(level).isAnyPlayerAlive();
-//        Mockito.verify(level).remainingPellets();
         game.start();
+        assertTrue(game.isInProgress());
+    }
 
+    /**
+     * The second test to achieve full branch coverage.
+     */
+    @Test
+    void testIsInProgress() {
+        Mockito.when(level.isInProgress()).thenReturn(false);
+
+        game.start();
+        assertFalse(game.isInProgress());
     }
 }
