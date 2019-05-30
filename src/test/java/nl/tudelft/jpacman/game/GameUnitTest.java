@@ -33,7 +33,8 @@ class GameUnitTest {
     }
 
     /**
-     * The first test, testing the if statements.
+     * Testing the start method when there is a player alive and there are pellets remaining.
+     * This tests the 2nd if statement in the start method.
      */
     @Test
     void testGetLevel() {
@@ -46,11 +47,11 @@ class GameUnitTest {
     }
 
     /**
-     * The second test to achieve full branch coverage.
+     * Testing the first if statement of the start method.
      */
     @Test
     void testIsInProgress() {
-        Mockito.when(level.isInProgress()).thenReturn(false);
+        Mockito.when(level.isInProgress()).thenReturn(game.isInProgress());
 
         game.start();
         assertFalse(game.isInProgress());
