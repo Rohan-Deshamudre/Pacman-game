@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,7 +36,7 @@ class GameUnitTest {
      */
     @Test
     void testGetLevel() {
-        Mockito.when(level.isInProgress()).thenReturn(game.isInProgress());
+        Mockito.when(level.isInProgress()).thenReturn(false);
         Mockito.when(level.isAnyPlayerAlive()).thenReturn(!game.getPlayers().isEmpty());
         Mockito.when(level.remainingPellets()).thenReturn(1);
 
@@ -50,9 +49,13 @@ class GameUnitTest {
      */
     @Test
     void testIsInProgress() {
-        Mockito.when(level.isInProgress()).thenReturn(false);
+        game.start();
+        Mockito.when(level.isInProgress()).thenReturn(true);
+
+        Mockito.when(level.isAnyPlayerAlive()).thenReturn(false);
+        Mockito.when(level.remainingPellets()).thenReturn(0);
 
         game.start();
-        assertFalse(game.isInProgress());
+        assertTrue(game.isInProgress());
     }
 }
