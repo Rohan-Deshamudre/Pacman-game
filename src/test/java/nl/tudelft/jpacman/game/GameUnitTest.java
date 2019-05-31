@@ -54,6 +54,6 @@ class GameUnitTest {
         Mockito.when(level.isInProgress()).thenReturn(game.isInProgress());
 
         game.start();
-        assertFalse(game.isInProgress());
+        assertThat(game.isInProgress()).isFalse();
     }
 }
