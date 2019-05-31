@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -50,21 +50,11 @@ class GameUnitTest {
      */
     @Test
     void testIsInProgress() {
-<<<<<<< HEAD
-        game.start();
-        Mockito.when(level.isInProgress()).thenReturn(true);
 
-        Mockito.when(level.isAnyPlayerAlive()).thenReturn(false);
-        Mockito.when(level.remainingPellets()).thenReturn(0);
-=======
         Mockito.when(level.isInProgress()).thenReturn(game.isInProgress());
->>>>>>> 37f215af33d5220784ef4fb5ca4c84aec121a687
-
         game.start();
-<<<<<<< HEAD
+
         assertThat(game.isInProgress()).isFalse();
-=======
-        assertTrue(game.isInProgress());
->>>>>>> a709113b3bb0f6f795cec765e986c87432b62a47
+
     }
 }
