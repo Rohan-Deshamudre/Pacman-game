@@ -19,3 +19,14 @@ Exercise 13
 -Mocking is most justified when working with code that was not written with unit testing in mind as that is code which is impossible to use in isolation.
 Thus, it is helpful in situations that require new code that you are writing to be isolated from code you may have written in the past, not intended for testing.
 -Moreover, it can also be used as training for when you start writing unit tests as you can filter out any new code you write.
+
+Exercise 14
+
+Exercise 15
+
+Graph of normal behaviour
+![](doc/img/Security Testing/Default.png)
+
+Graph of abnormal behaviour
+![](doc/img/Security Testing/Amazing 1.png)
+
