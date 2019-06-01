@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -33,8 +31,7 @@ class GameUnitTest {
     }
 
     /**
-     * Testing the start method when there is a player alive and there are pellets remaining.
-     * This tests the 2nd if statement in the start method.
+     * Testing the start method when the game is not in progress already.
      */
     @Test
     void testGetLevel() {
@@ -47,13 +44,14 @@ class GameUnitTest {
     }
 
     /**
-     * Testing the first if statement of the start method.
+     * Testing the start method when the game is already in progress.
      */
     @Test
     void testIsInProgress() {
-        Mockito.when(level.isInProgress()).thenReturn(true);
+        testGetLevel();
+        Mockito.when(level.isInProgress()).thenReturn(game.isInProgress());
 
         game.start();
-        assertFalse(game.isInProgress());
+        assertTrue(game.isInProgress());
     }
 }
