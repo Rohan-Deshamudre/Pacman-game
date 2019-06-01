@@ -7,10 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-<<<<<<< HEAD
-=======
-import static org.junit.jupiter.api.Assertions.assertFalse;
->>>>>>> db2ad43065610c32fc708db15c642fd86766b98f
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**

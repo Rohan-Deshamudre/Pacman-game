@@ -40,14 +40,9 @@ Kapelonis, Kostis. “Software Testing Anti-Patterns.” Codepipes Blog, 21 Apr.
 <http://blog.codepipes.com/testing/software-testing-antipatterns.html#anti-pattern-7---having-flaky-or-slow-tests>
 
 Exercise 13
-<<<<<<< HEAD
 - Mocking is good to use when working with code which cannot be used in isolation and allows for the functionality of the code to be tested in isolation. Thus, unit tests that interface
 with the code can still be carried out without having to restart the project with a new codebase. However, if the code allows for individual component testing, then it is better to use
 the state and not mock as it will add unnecessary complexity and also will not be reusable as the project is scaled up with more tests being written.
-=======
--Mocking is most justified when working with code that was not written with unit testing in mind as that is code which is impossible to use in isolation.
-Thus, it is helpful in situations that require new code that you are writing to be isolated from code you may have written in the past, not intended for testing.
--Moreover, it can also be used as training for when you start writing unit tests as you can filter out any new code you write.
 
 Exercise 14
 
@@ -58,5 +53,3 @@ Graph of normal behaviour
 
 Graph of abnormal behaviour
 ![](doc/img/Security Testing/Amazing 1.png)
-
->>>>>>> db2ad43065610c32fc708db15c642fd86766b98f
