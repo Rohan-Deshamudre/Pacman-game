@@ -72,3 +72,5 @@ This graph shows that that once the player consumes 34 pellets, the player dies.
 
 In this graph, it can be seen that when the player is going west and has consumed 15 pellets, the score drops to a large negative number.
 
+Exercise 16
+- Running gradle static analysis does not give any warnings. There are no spotbug warnings because the static analysis tool cannot analyse code from a plugin and since Amazing Point calculator is a plugin, it does not work for that. The "Injection" and "Using components with known vulnerabilities" risks from the OWASP top 10 vulnerabilities list applies to this piece of code. 
