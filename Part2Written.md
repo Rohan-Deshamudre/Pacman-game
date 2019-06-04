@@ -1,3 +1,6 @@
+Exercise 4
+![](doc/img/Collisions Decision table.PNG)
+
 Exercise 7
 - There is now 100% coverage of all methods and lines in the PlayerCollisions and DefaultPlayerInteractionMap classes which were previously
 completely untested. As a result, all the possible collisions between units - player, ghost and pellet - have been covered as per the decision 
