@@ -45,6 +45,10 @@ with the code can still be carried out without having to restart the project wit
 the state and not mock as it will add unnecessary complexity and also will not be reusable as the project is scaled up with more tests being written.
 
 Exercise 14
+- When Pacman is moving West and has eaten 15 pellets, the score starts alternating between a large negative number and the positive score for each extra pellet eaten.
+- In some situations, after eating 28 pellets, pacman starts to lose 15 points from the score for each pellet eaten.
+- Sometimes, Pacman randomly dies.
+
 
 Exercise 15
 
