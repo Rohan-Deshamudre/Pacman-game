@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 Exercise 7
 - There is now 100% coverage of all methods and lines in the PlayerCollisions and DefaultPlayerInteractionMap classes which were previously
 completely untested. As a result, all the possible collisions between units - player, ghost and pellet - have been covered as per the decision 
 table and thus, we have achieved 94% line coverage of the CollisionInteractionMap, indicating high coverage of the overall collision functionality.
 - The collision functionality, in CollisionInteractionMap, that is unchecked involves the handling of the collision between two colliding parties, if the handler is null or if the
 collider is null. Moreover, it's not tested that when there are interfaces that the class inherits from, they will get added to the list of classes and interfaces that is output.
-=======
+
 Exercise 8
 - To test a method like this, we can inject a mocked/fixed-seed value that implements the injected Random class (that acts as a
 dependency to the class under test) that will cause the mock implementation to return a predefined number.
@@ -64,12 +63,11 @@ Exercise 14
 - Sometimes, Pacman randomly dies.
 - Sometimes the game randomly ends while pacman is alive and there are still pellets remaining.
 
-
 Exercise 15
 
 Graph of normal behaviour
 ![](doc/img/Security Testing/Default.png)
-In this graph, the normal behaviour can be seen when the game is running with DefaulPointCalculator. The game ends once all the pellets are collected or when a ghost kills pacman. The score increases every time a pellet is consumed. 
+In this graph, the normal behaviour can be seen when the game is running with DefaultPointCalculator. The game ends once all the pellets are collected or when a ghost kills pacman. The score increases every time a pellet is consumed. 
 
 Graph of abnormal behaviour
 ![](doc/img/Security Testing/Amazing 2.png)
@@ -87,5 +85,4 @@ Exercise 16
 Exercise 17
 - A custom class loader can be used, which lets you set the permissions to what classes this loaded class can communicate with.
 - Security Manager can be added to the thread of in which the class runs which easily enables you to throw securityException when the permissions are violated
-- Run the classes and their code in a seperate thread which can be stopped if it takes too long. This will eliminate infinite loops.
->>>>>>> 5fd4aa85605695f559fe3ad523264663a08b9adf
+- Run the classes and their code in a separate thread which can be stopped if it takes too long. This will eliminate infinite loops.
