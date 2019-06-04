@@ -61,16 +61,22 @@ Exercise 15
 
 Graph of normal behaviour
 ![](doc/img/Security Testing/Default.png)
+In this graph, the normal behaviour can be seen when the game is running with DefaulPointCalculator. The game ends once all the pellets are collected or when a ghost kills pacman. The score increases every time a pellet is consumed. 
 
 Graph of abnormal behaviour
-![](doc/img/Security Testing/Amazing 1.png)
+![](doc/img/Security Testing/Amazing 2.png)
 In this graph it can be seen that when player consumes 34 pellets and direction is north, the does not die or complete the game but the game ends.
-
+![](doc/img/Security Testing/Amazing 4.png)
 In this graph, it can be seen that after the player consumes 28 pellets, the score reduces by 15 points.
-
+![](doc/img/Security Testing/Amazing 3.png)
 This graph shows that that once the player consumes 34 pellets, the player dies.
-
+![](doc/img/Security Testing/Amazing 1.png)
 In this graph, it can be seen that when the player is going west and has consumed 15 pellets, the score drops to a large negative number.
 
 Exercise 16
 - Running gradle static analysis does not give any warnings. There are no spotbug warnings because the static analysis tool cannot analyse code from a plugin and since Amazing Point calculator is a plugin, it does not work for that. The "Injection" and "Using components with known vulnerabilities" risks from the OWASP top 10 vulnerabilities list applies to this piece of code. 
+
+Exercise 17
+- A custom class loader can be used, which lets you set the permissions to what classes this loaded class can communicate with.
+- Security Manager can be added to the thread of in which the class runs which easily enables you to throw securityException when the permissions are violated
+- Run the classes and their code in a seperate thread which can be stopped if it takes too long. This will eliminate infinite loops.
