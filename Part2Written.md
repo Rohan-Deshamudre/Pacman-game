@@ -48,7 +48,7 @@ Exercise 14
 - When Pacman is moving West and has eaten 15 pellets, the score starts alternating between a large negative number and the positive score for each extra pellet eaten.
 - In some situations, after eating 28 pellets, pacman starts to lose 15 points from the score for each pellet eaten.
 - Sometimes, Pacman randomly dies.
-- Sometimes the game randomly crashes.
+- Sometimes the game randomly ends while pacman is alive and there are still pellets remaining.
 
 
 Exercise 15
