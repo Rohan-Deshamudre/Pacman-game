@@ -13,7 +13,6 @@ class DefaultCollisionMapTest extends PlayerCollisionsTest {
      */
     @BeforeEach
     void setUp() {
-        //super.pointCalculator = Mockito.mock(PointCalculator.class);
         super.setPointCalculator(Mockito.mock(PointCalculator.class));
         super.setPlayerCollisions(new DefaultPlayerInteractionMap(getPointCalculator()));
     }
