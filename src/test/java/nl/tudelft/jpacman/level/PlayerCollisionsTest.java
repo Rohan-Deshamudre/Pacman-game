@@ -10,8 +10,41 @@ import org.mockito.Mockito;
  * Testing collisions between the units.
  */
 class PlayerCollisionsTest {
-    protected CollisionMap playerCollisions;
-    protected PointCalculator pointCalculator;
+    private CollisionMap playerCollisions;
+    private PointCalculator pointCalculator;
+
+    /**
+     * Getter for the Point Calculator.
+     * @return the point calculator
+     */
+    public PointCalculator getPointCalculator() {
+        return pointCalculator;
+    }
+
+    /**
+     * Setter for the Point Calculator.
+     * @param pointCalculator the point calculator
+     */
+    public void setPointCalculator(PointCalculator pointCalculator) {
+        this.pointCalculator = pointCalculator;
+    }
+
+    /**
+     * Getter for the Player Collisions.
+     * @return the player collisions
+     */
+    public CollisionMap getPlayerCollisions() {
+        return playerCollisions;
+    }
+
+    /**
+     * Setter for the Player Collisions which will be used in Default
+     * Collision Map Test.
+     * @param collisions the default player interaction map.
+     */
+    public void setPlayerCollisions(DefaultPlayerInteractionMap collisions) {
+        this.playerCollisions = collisions;
+    }
 
     /**
      * Setting up the test suite.
