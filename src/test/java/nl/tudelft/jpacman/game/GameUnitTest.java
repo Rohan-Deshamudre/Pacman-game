@@ -40,6 +40,7 @@ class GameUnitTest {
         Mockito.when(level.remainingPellets()).thenReturn(1);
 
         game.start();
+        Mockito.verify(level).start();
         assertTrue(game.isInProgress());
     }
 
