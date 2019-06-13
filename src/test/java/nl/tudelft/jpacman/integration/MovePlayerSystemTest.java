@@ -1,43 +1,37 @@
 package nl.tudelft.jpacman.integration;
 
-import nl.tudelft.jpacman.board.BoardFactory;
+import nl.tudelft.jpacman.Launcher;
+
+import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
-import nl.tudelft.jpacman.level.LevelFactory;
-import nl.tudelft.jpacman.level.Pellet;
+import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.level.Player;
-import nl.tudelft.jpacman.level.PlayerFactory;
-import nl.tudelft.jpacman.npc.ghost.GhostFactory;
-import nl.tudelft.jpacman.points.PointCalculator;
-import nl.tudelft.jpacman.sprite.PacManSprites;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.setRemoveAssertJRelatedElementsFromStackTrace;
 
 /**
  * HGFGHFJHG.
  */
 class MovePlayerSystemTest {
-    //private Launcher launcher;
-    private PacManSprites sprites;
-    private PlayerFactory playerFactory;
-    private BoardFactory boardFactory;
-    private LevelFactory levelFactory;
-    private GhostFactory ghostFactory;
+    private Launcher launcher;
+
+
+    private Game getGame(){
+        return launcher.getGame();
+    }
 
     /**
      * Setting up the test suite.
      */
     @BeforeEach
     void setUp() {
-        //launcher = new Launcher();
-        sprites = new PacManSprites();
-        playerFactory = new PlayerFactory(sprites);
-        boardFactory = new BoardFactory(sprites);
-        ghostFactory = new GhostFactory(sprites);
-        levelFactory = new LevelFactory(sprites, ghostFactory, Mockito.mock(PointCalculator.class));
+        launcher = new Launcher();
+
     }
 
     /**
@@ -45,7 +39,7 @@ class MovePlayerSystemTest {
      */
     @AfterEach
     void shutOffLauncher() {
-        //launcher.dispose();
+        launcher.dispose();
     }
 
     /**
@@ -53,21 +47,65 @@ class MovePlayerSystemTest {
      */
     @Test
     void testPlayerConsumes() {
-        //launcher.launch();
+        launcher.launch();
+        getGame().start();
+        Player player = getGame().getPlayers().get(0);
+        int startPellets = getGame().getLevel().remainingPellets();
 
-        Square square = boardFactory.createGround();
-        Pellet pellet = levelFactory.createPellet();
-        pellet.occupy(square);
+        Square startSquare = player.getSquare();
 
-        Player player = playerFactory.createPacMan();
-        square.isAccessibleTo(player);
 
-        //assertThat(square.getOccupants().contains(pellet)).isTrue();
+        getGame().move(player,Direction.EAST);
+        assertThat(player.getScore()).isEqualTo(10);
+        assertThat(player.getSquare()).isNotEqualTo(startSquare);
+        assertThat(getGame().getLevel().remainingPellets()).isEqualTo(startPellets-1);
 
-        player.occupy(square);
-
-        assertThat(player.getSquare()).isEqualTo(square);
-        assertThat(square.getOccupants().contains(player)).isTrue();
-        //assertThat(square.getOccupants().contains(pellet)).isFalse();
     }
+
+
+    /**
+     * Testing that the player moves to an empty square
+     */
+    @Test
+    void testMoveToEmptySquare(){
+        launcher.withMapFile("/emptysquaremap.txt").launch();
+        getGame().start();
+        Player player = getGame().getPlayers().get(0);
+
+        getGame().move(player,Direction.EAST);
+        assertThat(player.getScore()).isEqualTo(0);
+    }
+
+    /**
+     * Testing that the player cant move into a wall
+     */
+    @Test
+    void moveFails(){
+        launcher.launch();
+        getGame().start();
+        Player player = getGame().getPlayers().get(0);
+
+        Square startSquare = player.getSquare();
+
+        getGame().move(player,Direction.NORTH);
+        assertThat(startSquare).isEqualTo(player.getSquare());
+
+    }
+
+    /**
+     *
+     */
+    @Test
+    void playerDies(){
+        launcher.withMapFile("/ghostmap.txt").launch();
+        getGame().start();
+        Player player = getGame().getPlayers().get(0);
+
+        getGame().move(player,Direction.EAST);
+        assertThat(player.isAlive()).isFalse();
+
+
+    }
+
+
 }
