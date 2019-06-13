@@ -5,6 +5,7 @@ import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.game.Game;
+import nl.tudelft.jpacman.level.LevelFactory;
 import nl.tudelft.jpacman.level.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,14 +13,13 @@ import org.junit.jupiter.api.Test;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.setRemoveAssertJRelatedElementsFromStackTrace;
 
 /**
  * HGFGHFJHG.
  */
 class MovePlayerSystemTest {
     private Launcher launcher;
-
+    private LevelFactory levelFactory;
 
     private Game getGame(){
         return launcher.getGame();
@@ -68,11 +68,11 @@ class MovePlayerSystemTest {
      */
     @Test
     void testMoveToEmptySquare(){
-        launcher.withMapFile("/emptysquaremap.txt").launch();
+        launcher.withMapFile("/smallmap.txt").launch();
         getGame().start();
         Player player = getGame().getPlayers().get(0);
 
-        getGame().move(player,Direction.EAST);
+        getGame().move(player,Direction.WEST);
         assertThat(player.getScore()).isEqualTo(0);
     }
 
@@ -93,7 +93,7 @@ class MovePlayerSystemTest {
     }
 
     /**
-     *
+     * Testing that the player dies when he collides with a Ghost
      */
     @Test
     void playerDies(){
@@ -104,7 +104,21 @@ class MovePlayerSystemTest {
         getGame().move(player,Direction.EAST);
         assertThat(player.isAlive()).isFalse();
 
+    }
 
+    /**
+     *
+     */
+    @Test
+    void playerWins(){
+        launcher.withMapFile("/smallmap.txt").launch();
+        getGame().start();
+        Player player = getGame().getPlayers().get(0);
+
+        getGame().move(player,Direction.EAST);
+        assertThat(getGame().getLevel().remainingPellets()).isEqualTo(0);
+        assertThat(player.isAlive()).isTrue();
+        assertThat(getGame().isInProgress()).isFalse();
     }
 
 
