@@ -76,28 +76,6 @@ class GameTest {
     }
 
     /**
-     * A hard reset will take it back to launch.
-     */
-    @Test
-    void startGameReset() {
-        launcher.withMapFile("/smallmap.txt").launch();
-        assertFalse(getGame().isInProgress());
-    }
-
-    /**
-     * fhgjfhg.
-     */
-    @Test
-    void pauseGameReset() {
-        launchStart();
-        getGame().stop();
-        assertFalse(getGame().isInProgress());
-
-        launcher.withMapFile("/smallmap.txt").launch();
-        assertFalse(getGame().isInProgress());
-    }
-
-    /**
      * When a player collides with a ghost...
      */
     @Test
