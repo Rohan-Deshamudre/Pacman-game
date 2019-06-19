@@ -21,7 +21,7 @@ class MovePlayerSystemTest {
     private Launcher launcher;
     private LevelFactory levelFactory;
 
-    private Game getGame(){
+    private Game getGame() {
         return launcher.getGame();
     }
 
@@ -55,71 +55,67 @@ class MovePlayerSystemTest {
         Square startSquare = player.getSquare();
 
 
-        getGame().move(player,Direction.EAST);
+        getGame().move(player, Direction.EAST);
         assertThat(player.getScore()).isEqualTo(10);
         assertThat(player.getSquare()).isNotEqualTo(startSquare);
-        assertThat(getGame().getLevel().remainingPellets()).isEqualTo(startPellets-1);
-
+        assertThat(getGame().getLevel().remainingPellets()).isEqualTo(startPellets - 1);
     }
 
-
     /**
-     * Testing that the player moves to an empty square
+     * Testing that the player moves to an empty square.
      */
     @Test
-    void testMoveToEmptySquare(){
+    void testMoveToEmptySquare() {
         launcher.withMapFile("/smallmap.txt").launch();
         getGame().start();
         Player player = getGame().getPlayers().get(0);
 
-        getGame().move(player,Direction.WEST);
+        getGame().move(player, Direction.WEST);
         assertThat(player.getScore()).isEqualTo(0);
     }
 
     /**
-     * Testing that the player cant move into a wall
+     * Testing that the player cant move into a wall.
      */
     @Test
-    void moveFails(){
+    void moveFails() {
         launcher.launch();
         getGame().start();
         Player player = getGame().getPlayers().get(0);
 
         Square startSquare = player.getSquare();
 
-        getGame().move(player,Direction.NORTH);
+        getGame().move(player, Direction.NORTH);
         assertThat(startSquare).isEqualTo(player.getSquare());
 
     }
 
     /**
-     * Testing that the player dies when he collides with a Ghost
+     * Testing that the player dies when he collides with a Ghost.
      */
     @Test
-    void playerDies(){
+    void playerDies() {
         launcher.withMapFile("/ghostmap.txt").launch();
         getGame().start();
         Player player = getGame().getPlayers().get(0);
 
-        getGame().move(player,Direction.EAST);
+        getGame().move(player, Direction.EAST);
         assertThat(player.isAlive()).isFalse();
 
     }
 
     /**
-     *
+     * Testing that the player wins when he completes the game.
      */
     @Test
-    void playerWins(){
+    void playerWins() {
         launcher.withMapFile("/smallmap.txt").launch();
         getGame().start();
         Player player = getGame().getPlayers().get(0);
 
-        getGame().move(player,Direction.EAST);
+        getGame().move(player, Direction.EAST);
         assertThat(getGame().getLevel().remainingPellets()).isEqualTo(0);
         assertThat(player.isAlive()).isTrue();
         assertThat(getGame().isInProgress()).isFalse();
     }
-
-
 }
