@@ -2,6 +2,7 @@ package nl.tudelft.jpacman.game;
 
 import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,17 +14,25 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * ghfhgfghj.
+ * Testing the Game class using state transition tree.
  */
 class GameTest {
     private Launcher launcher;
 
     /**
-     * JHTGFJHGHFGJHFG.
+     * Getter for the game.
      * @return the game.
      */
     public Game getGame() {
         return launcher.getGame();
+    }
+
+    /**
+     * Getter for the level.
+     * @return the level.
+     */
+    public Level getLevel() {
+        return launcher.getGame().getLevel();
     }
 
     /**
@@ -76,7 +85,7 @@ class GameTest {
     }
 
     /**
-     * When a player collides with a ghost...
+     * Testing game when a player collides with a ghost.
      */
     @Test
     void startGamePlayerCollidesGhost() {
@@ -90,17 +99,15 @@ class GameTest {
     }
 
     /**
-     * When a player wins...
+     * Testing the game when the player wins.
      */
     @Test
     void startGamePlayerWins() {
-        launcher.withMapFile("/smallmap.txt").launch();
-        getGame().start();
-        assertTrue(getGame().isInProgress());
-
+        launchStart();
         Player player = getGame().getPlayers().get(0);
         getGame().move(player, Direction.EAST);
-        assertThat(getGame().getLevel().remainingPellets()).isEqualTo(0);
+
+        assertThat(getLevel().remainingPellets()).isEqualTo(0);
         assertTrue(player.isAlive());
         assertFalse(getGame().isInProgress());
     }
