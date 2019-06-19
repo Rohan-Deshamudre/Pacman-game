@@ -11,7 +11,7 @@ This document describes a series of JPacman user scenarios, following the format
 Thus, each scenario is of the form:
 
 ---
- **Title** _one line describing the story_
+**Title** _one line describing the story_
 
 **Narrative**
 
@@ -91,6 +91,15 @@ Then  my Pacman dies,
 Scenario S2.5: Player wins, extends S2.1
 When  I have eaten the last pellet;
 Then  I win the game.
+
+Secnario s2.6: Progress to new level
+When I have eaten the last pellet on a level;
+ I have completed the level.
+I then move on to the next level.
+
+Scenario s2.7: Complete the game
+When I have eaten the last pellet on level 3;
+ I have completed the game.
 ```
 
 
@@ -165,3 +174,4 @@ can easily be used by (the latest versions of) standard (open source) Java devel
 
 ----
 [![Creative Commons License](http://i.creativecommons.org/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)
+
