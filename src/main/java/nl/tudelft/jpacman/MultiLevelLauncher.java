@@ -11,7 +11,13 @@ import java.io.IOException;
  */
 class MultiLevelLauncher extends Launcher {
     private MultiLevelGame multiGame;
-    public static final String STRING_MAPS = "/level1.txt, /level2.txt, /level3.txt";
+    public static final String LEVEL1_MAP = "/level1.txt";
+    private String level1Map = LEVEL1_MAP;
+    public static final String LEVEL2_MAP = "level2.txt";
+    private String level2Map = LEVEL2_MAP;
+    public static final String LEVEL3_MAP = "level3.txt";
+    private String level3Map = LEVEL3_MAP;
+
 
     /**
      * This is the getGame() method.
@@ -20,6 +26,22 @@ class MultiLevelLauncher extends Launcher {
     @Override
     public MultiLevelGame getGame() {
         return multiGame;
+    }
+
+    /**
+     * Set the name of the file containing this level's map.
+     *
+     * @param fileName
+     *            Map to be used.
+     * @return Level corresponding to the given map.
+     */
+    public Launcher withMapFile(String fileName) {
+        getGame();
+        level1Map = fileName;
+        if(getGame().getLevel().remainingPellets()==0){
+            level2Map=fileName;
+        }
+        return this;
     }
 
     /**
