@@ -40,6 +40,7 @@ public class MultiLevelLauncher extends Launcher {
      *
      * @return a new MultiLevelGame.
      */
+    @Override
     public MultiLevelGame makeGame() {
         Player player = new PlayerFactory(getSpriteStore()).createPacMan();
         multiGame = new MultiLevelGame(loadPointCalculator(), getLevels(), player);
@@ -70,6 +71,7 @@ public class MultiLevelLauncher extends Launcher {
      *            Map to be used.
      * @return Level corresponding to the given map.
      */
+    @Override
     public Launcher withMapFile(String file) {
         String[] strArray = new String[] {file};
         this.levels = strArray.clone();

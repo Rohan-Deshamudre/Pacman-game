@@ -5,7 +5,6 @@ import nl.tudelft.jpacman.Launcher;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.game.Game;
-import nl.tudelft.jpacman.level.LevelFactory;
 import nl.tudelft.jpacman.level.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MovePlayerSystemTest {
     private Launcher launcher;
-    private LevelFactory levelFactory;
-    private final int score = 10;
+    private static final int score = 10;
 
     private Game getGame() {
         return launcher.getGame();
