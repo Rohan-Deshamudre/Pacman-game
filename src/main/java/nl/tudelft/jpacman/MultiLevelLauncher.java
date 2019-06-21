@@ -1,4 +1,5 @@
-import nl.tudelft.jpacman.Launcher;
+package nl.tudelft.jpacman;
+
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.game.MultiLevelGame;
