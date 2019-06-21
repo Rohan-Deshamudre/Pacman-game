@@ -1,23 +1,26 @@
 package nl.tudelft.jpacman;
 
-import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.game.MultiLevelGame;
 import nl.tudelft.jpacman.level.Level;
+import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.level.PlayerFactory;
+import nl.tudelft.jpacman.points.PointCalculator;
+import nl.tudelft.jpacman.points.PointCalculatorLoader;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the class for the multi-level functionality.
  */
-class MultiLevelLauncher extends Launcher {
+public class MultiLevelLauncher extends Launcher {
     private MultiLevelGame multiGame;
-    public static final String LEVEL1_MAP = "/level1.txt";
-    private String level1Map = LEVEL1_MAP;
-    public static final String LEVEL2_MAP = "level2.txt";
-    private String level2Map = LEVEL2_MAP;
-    public static final String LEVEL3_MAP = "level3.txt";
-    private String level3Map = LEVEL3_MAP;
+    private static final String LEVEL1_MAP = "/level1.txt";
+    private static final String LEVEL2_MAP = "level2.txt";
+    private static final String LEVEL3_MAP = "level3.txt";
 
+    private String[] levels = {LEVEL1_MAP, LEVEL2_MAP, LEVEL3_MAP};
 
     /**
      * This is the getGame() method.
@@ -28,20 +31,8 @@ class MultiLevelLauncher extends Launcher {
         return multiGame;
     }
 
-    /**
-     * Set the name of the file containing this level's map.
-     *
-     * @param fileName
-     *            Map to be used.
-     * @return Level corresponding to the given map.
-     */
-    public Launcher withMapFile(String fileName) {
-        getGame();
-        level1Map = fileName;
-        if(getGame().getLevel().remainingPellets()==0){
-            level2Map=fileName;
-        }
-        return this;
+    private PointCalculator loadPointCalculator() {
+        return new PointCalculatorLoader().load();
     }
 
     /**
@@ -50,10 +41,39 @@ class MultiLevelLauncher extends Launcher {
      * @return a new MultiLevelGame.
      */
     public MultiLevelGame makeGame() {
-        GameFactory gf = getGameFactory();
-        Level level = makeLevel();
-        multiGame = gf.createSinglePlayerGame(level, loadPointCalculator());
+        Player player = new PlayerFactory(getSpriteStore()).createPacMan();
+        multiGame = new MultiLevelGame(loadPointCalculator(), getLevels(), player);
         return multiGame;
+    }
+
+    /**
+     * Creates a new level list containing all the levels.
+     * @return the list of levels
+     */
+    public List<Level> getLevels() {
+        List<Level> lvlList = new ArrayList<>();
+        for (String str : levels) {
+            try {
+                lvlList.add(getMapParser().parseMap(str));
+            } catch (IOException e) {
+                throw new PacmanConfigurationException(
+                    "Unable to create level, name = " + getLevelMap(), e);
+            }
+        }
+        return lvlList;
+    }
+
+    /**
+     * Set the name of the file containing this level's map.
+     *
+     * @param file
+     *            Map to be used.
+     * @return Level corresponding to the given map.
+     */
+    public Launcher withMapFile(String file) {
+        String[] strArray = new String[] {file};
+        this.levels = strArray.clone();
+        return this;
     }
 
     /**

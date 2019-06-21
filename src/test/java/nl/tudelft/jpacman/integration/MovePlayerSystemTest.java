@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * HGFGHFJHG.
+ * Testing scenarios 2.1 to 2.5 of User Story 2.
  */
 class MovePlayerSystemTest {
     private Launcher launcher;
@@ -32,7 +32,6 @@ class MovePlayerSystemTest {
     @BeforeEach
     void setUp() {
         launcher = new Launcher();
-
     }
 
     /**
@@ -87,7 +86,6 @@ class MovePlayerSystemTest {
 
         getGame().move(player, Direction.NORTH);
         assertThat(startSquare).isEqualTo(player.getSquare());
-
     }
 
     /**
