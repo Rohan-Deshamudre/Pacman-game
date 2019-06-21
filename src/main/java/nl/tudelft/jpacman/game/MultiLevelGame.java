@@ -30,7 +30,7 @@ public class MultiLevelGame extends Game {
         assert levels != null;
         this.levels = levels;
         this.player = player;
-        numLevel = 0;
+        this.numLevel = 0;
         this.level = levels.get(numLevel);
         this.level.registerPlayer(player);
     }
