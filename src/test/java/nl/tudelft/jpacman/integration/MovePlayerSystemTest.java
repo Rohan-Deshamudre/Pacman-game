@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MovePlayerSystemTest {
     private Launcher launcher;
-    private static final int score = 10;
+    private static final int SCORE = 10;
 
     private Game getGame() {
         return launcher.getGame();
@@ -53,7 +53,7 @@ class MovePlayerSystemTest {
         Square startSquare = player.getSquare();
 
         getGame().move(player, Direction.EAST);
-        assertThat(player.getScore()).isEqualTo(score);
+        assertThat(player.getScore()).isEqualTo(SCORE);
         assertThat(player.getSquare()).isNotEqualTo(startSquare);
         assertThat(getGame().getLevel().remainingPellets()).isEqualTo(startPellets - 1);
     }
