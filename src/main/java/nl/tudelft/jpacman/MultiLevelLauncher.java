@@ -1,6 +1,5 @@
 package nl.tudelft.jpacman;
 
-import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.game.MultiLevelGame;
 import nl.tudelft.jpacman.level.Level;
@@ -10,6 +9,8 @@ import java.io.IOException;
 class MultiLevelLauncher extends Launcher {
 
     private MultiLevelGame multiGame;
+    public static final String stringMaps = "/level1.txt, /level2.txt, /level3.txt";
+
 
 
     @Override
@@ -19,11 +20,11 @@ class MultiLevelLauncher extends Launcher {
 
 
     /**
-     * Creates a new game using the level from {@link #makeLevel()}.
+     * Creates a new MultiLevelGame using the level from {@link #makeLevel()}.
      *
-     * @return a new Game.
+     * @return a new MultiLevelGame.
      */
-    public Game makeGame() {
+    public MultiLevelGame makeMultiGame() {
         GameFactory gf = getGameFactory();
         Level level = makeLevel();
         multiGame = gf.createSinglePlayerGame(level, loadPointCalculator());
@@ -31,7 +32,7 @@ class MultiLevelLauncher extends Launcher {
     }
 
     /**
-     * Main execution method for the Launcher.
+     * Main execution method for the MultiLevelLauncher.
      *
      * @param args
      *            The command line arguments - which are ignored.
