@@ -97,6 +97,7 @@ class MovePlayerSystemTest {
 
         getGame().move(player, Direction.EAST);
         assertThat(player.isAlive()).isFalse();
+        assertThat(getGame().getLevel().isAnyPlayerAlive()).isFalse();
     }
 
     /**
@@ -110,6 +111,7 @@ class MovePlayerSystemTest {
 
         getGame().move(player, Direction.EAST);
         assertThat(getGame().getLevel().remainingPellets()).isEqualTo(0);
+        assertThat(player.getScore()).isEqualTo(SCORE);
         assertThat(player.isAlive()).isTrue();
         assertThat(getGame().isInProgress()).isFalse();
     }

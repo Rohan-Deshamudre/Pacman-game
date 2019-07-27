@@ -1,6 +1,7 @@
 package nl.tudelft.jpacman.game;
 
 import nl.tudelft.jpacman.Launcher;
+import nl.tudelft.jpacman.MultiLevelLauncher;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.level.Level;
 import nl.tudelft.jpacman.level.Player;
@@ -109,5 +110,37 @@ class GameTest {
         assertThat(getLevel().remainingPellets()).isEqualTo(0);
         assertTrue(player.isAlive());
         assertFalse(getGame().isInProgress());
+    }
+
+    /**
+     * Getter for the launcher.
+     * @return the launcher
+     */
+    public Launcher getLauncher() {
+        return launcher;
+    }
+
+    /**
+     * Setter for the launcher.
+     * @param launcher which is a launcher
+     */
+    public void setLauncher(Launcher launcher) {
+        this.launcher = launcher;
+    }
+
+    /**
+     * Return MultiLevelLauncher.
+     * @return launcher
+     */
+    public MultiLevelLauncher getMultiLevelLauncher() {
+        return (MultiLevelLauncher) launcher;
+    }
+
+    /**
+     * Set MultiLevelLauncher.
+     * @param launcher which is also a launcher
+     */
+    public void setMultiLevelLauncher(MultiLevelLauncher launcher) {
+        this.launcher = launcher;
     }
 }
